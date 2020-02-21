@@ -1,0 +1,29 @@
+
+<html>
+<head>
+    <script language=javascript src="liens.js"> </script>
+    <script>
+        function remplir_liste()
+        {
+            let liste = document.querySelector('#ma_liste');
+            let newUL = document.createElement("ul");
+            liste.appendChild(newUL);
+            for (let cle in liens){
+                let newLI = document.createElement("li");
+                newUL.appendChild(newLI);
+                let newContent = document.createTextNode(cle + " : ");
+                newLI.appendChild(newContent);
+                let newA = document.createElement("a");
+                newLI.appendChild(newA);
+                newA.setAttribute("href", "http://" + liens[cle]);
+                let newContentA = document.createTextNode(liens[cle]);
+                newA.appendChild(newContentA);
+            }
+        }
+    </script>
+</head>
+<body onload="remplir_liste()">
+<div id="ma_liste">
+</div>
+</body>
+</html>

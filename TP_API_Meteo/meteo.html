@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Test Meteo</title>
+</head>
+<body>
+    <p id="result"></p>
+    <form method="post" action="meteo.html">
+        <label for="ville">Nom de la ville : </label>
+        <input type="text" id="ville" name="ville">
+        <input type="button" id="submit" value="Valider">
+    </form>
+    <img id="icon" src="" alt="">
+    <script>
+        var n1 = document.querySelector('#result');
+        var champs = document.querySelector('#ville');
+        var valider = document.querySelector('#submit');
+        var icon = document.querySelector('#icon');
+        var meteo;
+        var temp = 0;
+       /*  // Création d'une requète HTTP
+        var req = new XMLHttpRequest();
+        var temp = 0;
+
+        // Requete HTTP GET Synchrone vers openweathermap
+        req.open("GET", "https://api.openweathermap.org/data/2.5/weather?q=Douai,france&lang=fr&units=metric&appid=2b74f46d419b18f5bdf26e10b2e068cb");
+
+        // Envoi de la requete
+        req.send(null);
+        meteo = req.responseText;
+
+        // Affiche la réponse reçue pour la requête
+        console.log(meteo); */
+
+
+        // Version asynchrone
+        valider.addEventListener('click', function(){
+            var req = new XMLHttpRequest();
+            var url = "https://api.openweathermap.org/data/2.5/weather?q=" + champs.value + ",france&lang=fr&units=metric&appid=2b74f46d419b18f5bdf26e10b2e068cb";
+            req.open("GET", url);
+            req.addEventListener("loadend", function() {
+                if (req.status >= 200 && req.status < 400){
+                    meteo = req.responseText;
+                    var obj = JSON.parse(meteo);
+                    var temp = obj.main.temp;
+                    var ville = obj.name;
+                    var hum = obj.main.humidity;
+                    var url_icon = "http://openweathermap.org/img/wn/"+ obj.weather[0].icon  + "@2x.png";
+                    n1.innerHTML = "OpenWeatherMap : A " + ville + ", la température est de " + Math.round(temp) + " degré et l'humidité est de " + hum + " %.<br/>";
+                    icon.src = url_icon;
+
+                    console.log(obj.weather[0].description)
+                }else { console.error(req.status + " " + req.statusText)}
+            });
+            req.addEventListener("error", function(){
+                console.error("Erreur réseau");
+            });
+            req.send(null)
+        });
+
+
+    </script>
+
+
+
+
+
+
+
+
+</body>
+</html>
